@@ -1,11 +1,7 @@
-// Master shader for atmosphere post-process pass
-// Processed by wgsl-plus - separate from globe shader
+// Shared Uniforms struct - imported by both passes
+// Must match TypeScript layout in globe-uniforms.ts
+// Note: The binding declaration is in bindings_main.wgsl and bindings_post.wgsl
 
-#entrypoint "vs_main"
-#entrypoint "fs_main"
-
-// Uniforms struct must be declared FIRST (before files that reference `u`)
-// Must match main.wgsl exactly for shared uniform buffer
 struct Uniforms {
   viewProjInverse: mat4x4f,   // 64 bytes
   eyePosition: vec3f,         // 12 + 4 pad = 16 bytes
@@ -40,10 +36,13 @@ struct Uniforms {
   gridLabelMaxRadius: f32,
   gridLineWidth: f32,
   tempPaletteRange: vec2f,
+  cloudsOpacity: f32,
+  humidityOpacity: f32,
+  windOpacity: f32,
+  cloudsDataReady: u32,
+  humidityDataReady: u32,
+  windDataReady: u32,
+  logoOpacity: f32,
+  logoPad: f32,
 }
 
-#include "sun-atmo.wgsl"
-#include "common.wgsl"
-#include "sun.wgsl"
-#include "sun-blend.wgsl"
-#include "sun-post.wgsl"

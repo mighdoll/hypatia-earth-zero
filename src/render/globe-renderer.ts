@@ -3,8 +3,8 @@
  */
 
 import { Camera, type CameraConfig } from './camera';
-import shaderCode from './shaders/zero-main.wgsl?raw';
-import postprocessShaderCode from './shaders/zero-post.wgsl?raw';
+import shaderCode from './shaders/globe_main.wesl?static';
+import postprocessShaderCode from './shaders/globe_post.wesl?static';
 import { createAtmosphereLUTs, type AtmosphereLUTs, type AtmosphereLUTData } from './atmosphere-luts';
 import { PressureLayer, type PressureResolution, type SmoothingAlgorithm } from './pressure-layer';
 import { WindLayer } from './wind-layer';

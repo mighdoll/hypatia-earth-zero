@@ -1,5 +1,7 @@
 // Sun layer - sun disc and glow rendering
 
+import package::bindings_post::u;
+
 fn blendSun(color: vec4f, fragCoord: vec2f) -> vec4f {
   if (u.sunOpacity < 0.01) { return color; }
 

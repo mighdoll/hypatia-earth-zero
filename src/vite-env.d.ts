@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+/// <reference types="wesl-plugin/suffixes" />
 
 declare const __APP_VERSION__: string;
 declare const __APP_HASH__: string;

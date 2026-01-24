@@ -1,5 +1,7 @@
 // Logo layer - displays Hypatia logo as screen-space sprite when all layers are off
 
+import package::bindings_main::{u, logoTexture, logoSampler};
+
 fn blendLogo(color: vec4f, fragPos: vec2f) -> vec4f {
   // Logo opacity computed in JS from all layer opacities
   if (u.logoOpacity < 0.01) {

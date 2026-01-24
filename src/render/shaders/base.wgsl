@@ -1,5 +1,7 @@
 // Basemap layer - Earth texture from cubemap
 
+import package::bindings_main::{u, basemap, basemapSampler};
+
 fn blendBasemap(color: vec4f, hitPoint: vec3f) -> vec4f {
   // Use textureSampleLevel to avoid non-uniform control flow issues
   let texColor = textureSampleLevel(basemap, basemapSampler, hitPoint, 0.0);

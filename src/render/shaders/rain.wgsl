@@ -1,5 +1,8 @@
 // Rain/precipitation layer
 
+import package::temp::tempLatLonToCell;
+import package::bindings_main::{u, rainData};
+
 fn rainLatLonToCell(lat: f32, lon: f32) -> u32 {
   // Reuse temperature's cell lookup (same Gaussian grid)
   return tempLatLonToCell(lat, lon);

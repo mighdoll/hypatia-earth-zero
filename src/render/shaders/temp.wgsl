@@ -2,6 +2,9 @@
 // Uses two separate buffers (tempData0, tempData1) for interpolation
 // Buffers are rebound when active slots change (no offset math needed)
 
+import package::common::COMMON_TAU;
+import package::bindings_main::{u, gaussianLats, ringOffsets, tempData0, tempData1, tempPalette, tempPaletteSampler};
+
 // Binary search for Gaussian latitude ring
 fn tempFindRing(lat: f32) -> u32 {
   var lo: u32 = 0u;

@@ -1,26 +1,10 @@
 // Grid layer - animated lat/lon grid overlay
 // Lines are passed as uniforms for LoD animation
 
+import package::common::COMMON_PI;
+import package::bindings_main::{u, gridLines, GridLines};
+
 const GRID_MAX_LINES: u32 = 80u;
-
-// Grid line data from GridAnimator
-// Uses vec4 packing for 16-byte uniform alignment: 20 vec4s = 80 floats
-struct GridLines {
-  lonDegrees: array<vec4<f32>, 20>,    // longitude line positions (80 floats)
-  lonOpacities: array<vec4<f32>, 20>,  // longitude line opacities (80 floats)
-  latDegrees: array<vec4<f32>, 20>,    // latitude line positions (80 floats)
-  latOpacities: array<vec4<f32>, 20>,  // latitude line opacities (80 floats)
-  lonCount: u32,                        // active longitude lines
-  latCount: u32,                        // active latitude lines
-  isAnimating: u32,                     // 1 if transitioning between LoD levels
-  spacing: f32,                         // current LoD spacing in degrees (same for lon/lat)
-  _pad0: f32,                           // padding (was latSpacing, now unused)
-  _pad1: f32,
-  _pad2: f32,
-  _pad3: f32,
-}
-
-@group(0) @binding(21) var<uniform> gridLines: GridLines;
 
 // Helper to unpack vec4 array to get individual float
 fn getGridLonDeg(i: u32) -> f32 {

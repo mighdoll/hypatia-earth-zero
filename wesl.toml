@@ -1,0 +1,3 @@
+edition = "unstable_2025"
+include = ["./src/render/shaders/**/*.w[eg]sl"]
+root = "./src/render/shaders"

@@ -1,9 +1,9 @@
 // Grid text labels - MSDF text at grid line intersections
 // Renders coordinate labels (e.g., "15N", "45W") on the globe surface
 
-// Font atlas binding
-@group(0) @binding(11) var fontAtlas: texture_2d<f32>;
-@group(0) @binding(12) var fontSampler: sampler;
+import package::common::{COMMON_PI, COMMON_TAU};
+import package::grid::{getGridLonDeg, getGridLonOpacity, getGridLatDeg, getGridLatOpacity};
+import package::bindings_main::{u, fontAtlas, fontSampler, gridLines};
 
 // Atlas constants from IBMPlexMono-Regular.json
 const ATLAS_WIDTH: f32 = 117.0;

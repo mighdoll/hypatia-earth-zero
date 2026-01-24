@@ -1,20 +1,9 @@
-// Atmosphere Post-Process Shader
-// Applies atmospheric effects to the rendered scene based on depth
-//
-// Reads: color texture (scene without atmosphere), depth texture
-// Outputs: final color with atmosphere applied to all geometry
+// Globe post-process shader entry point
+// Applies atmospheric effects to the rendered scene
 
-// Uniforms struct 'u' is declared in master-postprocess.wgsl before includes
-// Bindings for post-process pass
-@group(0) @binding(0) var<uniform> u: Uniforms;
-@group(0) @binding(1) var sceneColor: texture_2d<f32>;
-@group(0) @binding(2) var sceneDepth: texture_depth_2d;
-@group(0) @binding(3) var sceneSampler: sampler;
-// Atmosphere LUTs
-@group(0) @binding(4) var atm_transmittance: texture_2d<f32>;
-@group(0) @binding(5) var atm_scattering: texture_3d<f32>;
-@group(0) @binding(6) var atm_irradiance: texture_2d<f32>;
-@group(0) @binding(7) var atm_sampler: sampler;
+import package::bindings_post::{u, sceneColor, sceneDepth, sceneSampler};
+import package::sun_atmo::UNIT_TO_KM;
+import package::sun_blend::{blendAtmosphereSpace, blendAtmosphereGlobe, ATM_EXPOSURE};
 
 // Fullscreen triangle vertex shader
 @vertex
@@ -68,28 +57,22 @@ fn fs_main(@builtin(position) fragPos: vec4f) -> @location(0) vec4f {
   let screenPos = fragPos.xy;
   let uv = screenPos / u.resolution;
 
-  // Sample scene color (use sampler for filtering)
   let color = textureSample(sceneColor, sceneSampler, uv);
 
   // Load depth directly (depth textures can't use samplers in WebGPU)
   let texCoord = vec2<i32>(fragPos.xy);
   let depth = textureLoad(sceneDepth, texCoord, 0);
 
-  // Convert camera to km scale for atmosphere functions
   let camera_km = u.eyePosition * UNIT_TO_KM;
 
+  // Sky/space pixel - apply full sky atmosphere
   if (isSkyPixel(depth)) {
-    // Sky/space pixel - apply full sky atmosphere
     let rayDir = computeRayPP(screenPos);
     return blendAtmosphereSpace(color, rayDir, camera_km, ATM_EXPOSURE, fragPos);
   }
 
-  // Globe or geometry pixel - apply globe atmosphere
-  // Reconstruct world position from depth
+  // Globe pixel - apply surface atmosphere
   let worldPos = reconstructWorldPosition(screenPos, depth);
-
-  // For globe surface, the world position should be near unit sphere
-  // Normalize to get surface normal (works for sphere geometry)
   let hitPoint = normalize(worldPos);
 
   return blendAtmosphereGlobe(color, hitPoint, camera_km, ATM_EXPOSURE);

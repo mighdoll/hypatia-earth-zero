@@ -1,6 +1,10 @@
 // Atmosphere blend functions - simplified approach without LUT for globe surface
 // Uses Bruneton LUT only for sky/space, simple math for globe
 
+import package::sun_atmo::GetSkyRadiance;
+import package::sun::blendSun;
+import package::bindings_post::{u, atm_transmittance, atm_scattering, atm_sampler};
+
 // Atmosphere tuning params
 const ATM_EXPOSURE: f32 = 5.0;            // Tone mapping exposure (higher = brighter)
 const ATM_NIGHT_BRIGHTNESS: f32 = 0.25;   // Night side darkness (0 = black, 1 = same as day)
